@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tabla Periódica</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="dark">
+    <header>
+      <h1>Tabla Periódica</h1>
+      <button id="theme-toggle">Cambiar Tema</button>
+    </header>
+
+    <!-- Filtros -->
+    <div class="container">
+      <nav id="filters">
+        <button id="clear-filter" class="main-btn">Mostrar Todos</button>
+
+        <div class="filter-group">
+          <button data-main="Metales" class="main-btn">Metales</button>
+          <div class="sub-filters" id="sub-metales">
+            <button data-group="Metal Alcalino">Metales Alcalinos</button>
+            <button data-group="Metal Alcalinotérreo">
+              Metales Alcalinotérreos
+            </button>
+            <button data-group="Metal de Transición">
+              Metales de Transición
+            </button>
+            <button data-group="Metal de Post-transición">
+              Metales de Post-transición
+            </button>
+            <button data-group="Lantánido">Lantánidos</button>
+            <button data-group="Actínido">Actínidos</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <button data-main="Metaloide" class="main-btn">Metaloides</button>
+          <div class="sub-filters" id="sub-metaloides">
+            <!-- No despliega nada -->
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <button data-main="No Metales" class="main-btn">No Metales</button>
+          <div class="sub-filters" id="sub-nometales">
+            <button data-group="Gas Noble">Gases Nobles</button>
+            <button data-group="No Metal Reactivo">Otros No Metales</button>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Contenedor de la tabla -->
+    <main id="periodic-table"></main>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <span id="close-modal">&times;</span>
+        <h2 id="element-name"></h2>
+        <p><strong>Símbolo:</strong> <span id="element-symbol"></span></p>
+        <p>
+          <strong>Número Atómico:</strong> <span id="element-number"></span>
+        </p>
+        <p><strong>Masa Atómica:</strong> <span id="element-mass"></span></p>
+        <p>
+          <strong>Estado Estándar:</strong> <span id="element-state"></span>
+        </p>
+        <p>
+          <strong>Configuración Atómica:</strong>
+          <span id="element-config"></span>
+        </p>
+        <p><strong>Grupo:</strong> <span id="element-group"></span></p>
+        <p>
+          <strong>Año De Descubrimiento:</strong> <span id="element-year"></span>
+        </p>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
