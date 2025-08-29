@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tabla Periódica</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" />
   </head>
-  <body class="dark">
+  <body class="light">
     <header>
       <h1>Tabla Periódica</h1>
       <button id="theme-toggle">Cambiar Tema</button>
@@ -14,11 +15,37 @@
 
     <!-- Filtros -->
     <div class="container">
-      <nav id="filters">
-        <button id="clear-filter" class="main-btn">Mostrar Todos</button>
+      <div class="filter-container">
+        <div class="main-filter-container">
+          <p>Filtros <i class="fa-solid fa-filter"></i></p>
+          <nav id="filters">
+            <button id="clear-filter" class="main-btn">Mostrar Todos</button>
 
-        <div class="filter-group">
-          <button data-main="Metales" class="main-btn">Metales</button>
+            <div class="filter-group">
+              <button data-main="Metales" class="main-btn">
+                Metales
+              </button>
+            </div>
+
+            <div class="filter-group">
+              <button data-main="Metaloide" class="main-btn">Metaloides</button>
+              <div
+                class="sub-filters"
+                id="sub-metaloides"
+                style="display: none"
+              >
+                <!-- No despliega nada -->
+              </div>
+            </div>
+
+            <div class="filter-group">
+              <button data-main="No Metales" class="main-btn">
+                No Metales
+              </button>
+            </div>
+          </nav>
+        </div>
+        <div class="subfilter-container">
           <div class="sub-filters" id="sub-metales">
             <button data-group="Metal Alcalino">Metales Alcalinos</button>
             <button data-group="Metal Alcalinotérreo">
@@ -31,25 +58,14 @@
               Metales de Post-transición
             </button>
             <button data-group="Lantánido">Lantánidos</button>
-            <button data-group="Actínido">Actínidos</button>
+            <button data-group="Actinido">Actínidos</button>
           </div>
-        </div>
-
-        <div class="filter-group">
-          <button data-main="Metaloide" class="main-btn">Metaloides</button>
-          <div class="sub-filters" id="sub-metaloides">
-            <!-- No despliega nada -->
-          </div>
-        </div>
-
-        <div class="filter-group">
-          <button data-main="No Metales" class="main-btn">No Metales</button>
-          <div class="sub-filters" id="sub-nometales">
+          <div class="sub-filters" id="sub-nometales" style="display: none">
             <button data-group="Gas Noble">Gases Nobles</button>
             <button data-group="No Metal Reactivo">Otros No Metales</button>
           </div>
         </div>
-      </nav>
+      </div>
     </div>
 
     <!-- Contenedor de la tabla -->
@@ -74,7 +90,8 @@
         </p>
         <p><strong>Grupo:</strong> <span id="element-group"></span></p>
         <p>
-          <strong>Año De Descubrimiento:</strong> <span id="element-year"></span>
+          <strong>Año De Descubrimiento:</strong>
+          <span id="element-year"></span>
         </p>
       </div>
     </div>

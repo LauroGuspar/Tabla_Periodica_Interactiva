@@ -139,7 +139,7 @@ function hexToRgb(hex) {
   let r = (bigint >> 16) & 255;
   let g = (bigint >> 8) & 255;
   let b = bigint & 255;
-  return { r, g, b };
+  return { r, g, b};
 }
 
 // === Construcción ===
@@ -174,8 +174,8 @@ function buildTable(elements) {
       <span class="mass">${el.AtomicMass}</span>
     `;
 
-    const { r, g, b } = hexToRgb(el.CPKHexColor || "CCCCCC");
-    div.style.background = `linear-gradient(110deg, rgba(${r},${g},${b},0.2), rgba(${r},${g},${b},0.3))`;
+    const { r, g, b, a } = hexToRgb(el.CPKHexColor || "CCCCCC");
+    div.style.background = `linear-gradient(110deg, rgba(${r},${g},${b},0.2), rgba(${r},${g},${b},0.25))`;
 
     // Posicionamiento de los Elementos
     const pos = elementPositions[parseInt(el.AtomicNumber)];
@@ -237,7 +237,7 @@ function toggleSubFilters(main) {
 }
 
 function initFilters(elements) {
-  const subButtons = document.querySelectorAll("#filters button[data-group]");
+  const subButtons = document.querySelectorAll(".sub-filters button[data-group]");
   const mainButtons = document.querySelectorAll("#filters button[data-main]");
   const clearBtn = document.getElementById("clear-filter");
 
