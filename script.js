@@ -139,7 +139,7 @@ function hexToRgb(hex) {
   let r = (bigint >> 16) & 255;
   let g = (bigint >> 8) & 255;
   let b = bigint & 255;
-  return { r, g, b };
+  return { r, g, b};
 }
 
 // === Construcción ===
@@ -174,8 +174,8 @@ function buildTable(elements) {
       <span class="mass">${el.AtomicMass}</span>
     `;
 
-    const { r, g, b } = hexToRgb(el.CPKHexColor || "CCCCCC");
-    div.style.background = `linear-gradient(110deg, rgba(${r},${g},${b},0.2), rgba(${r},${g},${b},0.3))`;
+    const { r, g, b, a } = hexToRgb(el.CPKHexColor || "CCCCCC");
+    div.style.background = `linear-gradient(110deg, rgba(${r},${g},${b},0.2), rgba(${r},${g},${b},0.25))`;
 
     // Posicionamiento de los Elementos
     const pos = elementPositions[parseInt(el.AtomicNumber)];
@@ -223,12 +223,7 @@ let activeButton = null;
 
 // Mostrar/ocultar subgrupos
 function toggleSubFilters(main) {
-  // Ocultar todos
-  document.querySelectorAll(".sub-filters").forEach(div => {
-    div.style.display = "none";
-  });
-
-  // Mostrar solo el del botón presionado
+  hideAllSubFilters();
   if (main === "Metales") {
     document.getElementById("sub-metales").style.display = "block";
   } else if (main === "No Metales") {
@@ -237,7 +232,7 @@ function toggleSubFilters(main) {
 }
 
 function initFilters(elements) {
-  const subButtons = document.querySelectorAll("#filters button[data-group]");
+  const subButtons = document.querySelectorAll(".sub-filters button[data-group]");
   const mainButtons = document.querySelectorAll("#filters button[data-main]");
   const clearBtn = document.getElementById("clear-filter");
 
@@ -248,37 +243,49 @@ function initFilters(elements) {
       "Metal de Transición",
       "Metal de Post-transición",
       "Lantánido",
-      "Actínido",
+      "Actinido",
     ],
     Metaloide: ["Metaloide"],
     "No Metales": ["Gas Noble", "No Metal Reactivo"],
   };
 
-  // Subgrupos
-  subButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const group = btn.dataset.group;
-      if (activeFilter === group) {
-        resetFilter();
-      } else {
-        applyFilter([group]);
-        setActiveButton(btn, group);
-      }
-    });
+// Subgrupos
+subButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const group = btn.dataset.group;
+
+    if (activeFilter === group) {
+      // Si ya estaba activo → reset
+      resetFilter();
+      setActiveButton(clearBtn, "all");
+      hideAllSubFilters();
+    } else {
+      applyFilter([group]);
+
+      // limpiar todos los sub-filtros antes de activar solo el clicado
+      document.querySelectorAll(".sub-filters button").forEach(b => b.classList.remove("active"));
+      setActiveButton(btn, group);
+    }
   });
+});
+
 
   // Grupos principales
   mainButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
       const main = btn.dataset.main;
-      toggleSubFilters(main);
 
       if (activeFilter === main) {
+        // Si ya estaba activo → reset
         resetFilter();
+        setActiveButton(clearBtn, "all");
+        hideAllSubFilters();
       } else {
         const groups = categoryMap[main] || [];
         applyFilter(groups);
         setActiveButton(btn, main);
+        toggleSubFilters(main);
+        highlightSubFilters(groups);
       }
     });
   });
@@ -286,8 +293,12 @@ function initFilters(elements) {
   // Botón "Mostrar Todos"
   clearBtn.addEventListener("click", () => {
     resetFilter();
-    document.querySelectorAll(".sub-filters").forEach(div => div.style.display = "none");
+    setActiveButton(clearBtn, "all");
+    hideAllSubFilters();
   });
+
+  // Activar por defecto "Mostrar Todos"
+  setActiveButton(clearBtn, "all");
 }
 
 function applyFilter(groups) {
@@ -302,14 +313,34 @@ function applyFilter(groups) {
 
 function resetFilter() {
   document.querySelectorAll(".element").forEach((el) => el.classList.remove("dimmed"));
-  if (activeButton) activeButton.classList.remove("active");
+  document.querySelectorAll("#filters button, .sub-filters button").forEach(btn => btn.classList.remove("active"));
   activeFilter = null;
   activeButton = null;
 }
 
 function setActiveButton(btn, filterName) {
+  // Se desmarcamos el anterior
   if (activeButton) activeButton.classList.remove("active");
   activeButton = btn;
   activeButton.classList.add("active");
   activeFilter = filterName;
+}
+
+// Resalta sub-filtros cuando se selecciona un grupo completo
+function highlightSubFilters(groups) {
+  // Se limpian todos
+  document.querySelectorAll(".sub-filters button").forEach(btn => btn.classList.remove("active"));
+
+  // Se activan todos los que pertenezcan a ese grupo
+  document.querySelectorAll(".sub-filters button").forEach(btn => {
+    if (groups.includes(btn.dataset.group)) {
+      btn.classList.add("active");
+    }
+  });
+}
+
+
+// Oculta todos los sub-filtros
+function hideAllSubFilters() {
+  document.querySelectorAll(".sub-filters").forEach(div => div.style.display = "none");
 }
